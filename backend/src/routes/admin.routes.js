@@ -1,0 +1,10 @@
+const express = require('express');
+const router = express.Router();
+const { getPlatformAnalytics, getUsers, toggleUserStatus, changeUserRole } = require('../controllers/admin.controller');
+const { protect, authorize } = require('../middlewares/auth.middleware');
+router.use(protect, authorize('admin'));
+router.get('/analytics', getPlatformAnalytics);
+router.get('/users', getUsers);
+router.put('/users/:id/toggle', toggleUserStatus);
+router.put('/users/:id/role', changeUserRole);
+module.exports = router;
