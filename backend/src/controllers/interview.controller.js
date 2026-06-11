@@ -1,5 +1,9 @@
-const Interview = require('../models/Interview.model');
-const { generateInterviewQuestions, evaluateAnswer, generateInterviewFeedback } = require('../services/ai/ai.service');
+const Interview = require("../models/Interview.model");
+const {
+  generateInterviewQuestions,
+  evaluateAnswer,
+  generateInterviewFeedback,
+} = require("../services/ai.service");
 
 // @desc    Start a new interview
 // @route   POST /api/interview/start
@@ -7,7 +11,12 @@ exports.startInterview = async (req, res, next) => {
   try {
     const { role, difficulty, type, questionCount = 10 } = req.body;
 
-    const questions = await generateInterviewQuestions(role, difficulty, type, questionCount);
+    const questions = await generateInterviewQuestions(
+      role,
+      difficulty,
+      type,
+      questionCount,
+    );
 
     const interview = await Interview.create({
       userId: req.user._id,
@@ -15,7 +24,7 @@ exports.startInterview = async (req, res, next) => {
       role,
       difficulty,
       type,
-      questions: questions.map(q => ({
+      questions: questions.map((q) => ({
         question: q.question,
         type: q.type,
         difficulty: q.difficulty,
@@ -23,7 +32,7 @@ exports.startInterview = async (req, res, next) => {
         followUpQuestions: q.followUpQuestions || [],
       })),
       totalQuestions: questions.length,
-      status: 'in-progress',
+      status: "in-progress",
       startedAt: new Date(),
     });
 
@@ -39,36 +48,60 @@ exports.submitAnswer = async (req, res, next) => {
   try {
     const { questionIndex, answer, timeSpent } = req.body;
 
-    const interview = await Interview.findOne({ _id: req.params.id, userId: req.user._id });
+    const interview = await Interview.findOne({
+      _id: req.params.id,
+      userId: req.user._id,
+    });
     if (!interview) {
-      return res.status(404).json({ success: false, message: 'Interview not found.' });
+      return res
+        .status(404)
+        .json({ success: false, message: "Interview not found." });
     }
 
-    if (interview.status === 'completed') {
-      return res.status(400).json({ success: false, message: 'Interview already completed.' });
+    if (interview.status === "completed") {
+      return res
+        .status(400)
+        .json({ success: false, message: "Interview already completed." });
     }
 
     const question = interview.questions[questionIndex];
     if (!question) {
-      return res.status(404).json({ success: false, message: 'Question not found.' });
+      return res
+        .status(404)
+        .json({ success: false, message: "Question not found." });
     }
 
     // AI evaluates the answer
-    let evaluation = { score: 0, feedback: 'No answer provided', strengths: [], improvements: [] };
+    let evaluation = {
+      score: 0,
+      feedback: "No answer provided",
+      strengths: [],
+      improvements: [],
+    };
     if (answer && answer.trim()) {
-      evaluation = await evaluateAnswer(question.question, answer, interview.role);
+      evaluation = await evaluateAnswer(
+        question.question,
+        answer,
+        interview.role,
+      );
     }
 
-    interview.questions[questionIndex].userAnswer = answer || '';
+    interview.questions[questionIndex].userAnswer = answer || "";
     interview.questions[questionIndex].aiFeedback = evaluation.feedback;
     interview.questions[questionIndex].score = evaluation.score;
     interview.questions[questionIndex].timeSpent = timeSpent || 0;
-    interview.completedQuestions = interview.questions.filter(q => q.userAnswer).length;
+    interview.completedQuestions = interview.questions.filter(
+      (q) => q.userAnswer,
+    ).length;
 
-    interview.markModified('questions');
+    interview.markModified("questions");
     await interview.save();
 
-    res.json({ success: true, evaluation, question: interview.questions[questionIndex] });
+    res.json({
+      success: true,
+      evaluation,
+      question: interview.questions[questionIndex],
+    });
   } catch (error) {
     next(error);
   }
@@ -78,26 +111,40 @@ exports.submitAnswer = async (req, res, next) => {
 // @route   POST /api/interview/:id/complete
 exports.completeInterview = async (req, res, next) => {
   try {
-    const interview = await Interview.findOne({ _id: req.params.id, userId: req.user._id });
+    const interview = await Interview.findOne({
+      _id: req.params.id,
+      userId: req.user._id,
+    });
     if (!interview) {
-      return res.status(404).json({ success: false, message: 'Interview not found.' });
+      return res
+        .status(404)
+        .json({ success: false, message: "Interview not found." });
     }
 
     // Calculate overall score
-    const answeredQuestions = interview.questions.filter(q => q.userAnswer);
-    const totalScore = answeredQuestions.reduce((sum, q) => sum + (q.score || 0), 0);
-    const overallScore = answeredQuestions.length > 0
-      ? Math.round((totalScore / (answeredQuestions.length * 10)) * 100)
-      : 0;
+    const answeredQuestions = interview.questions.filter((q) => q.userAnswer);
+    const totalScore = answeredQuestions.reduce(
+      (sum, q) => sum + (q.score || 0),
+      0,
+    );
+    const overallScore =
+      answeredQuestions.length > 0
+        ? Math.round((totalScore / (answeredQuestions.length * 10)) * 100)
+        : 0;
 
     // Generate AI overall feedback
-    const aiFeedback = await generateInterviewFeedback(interview.questions, interview.role);
+    const aiFeedback = await generateInterviewFeedback(
+      interview.questions,
+      interview.role,
+    );
 
-    const duration = Math.round((Date.now() - interview.startedAt.getTime()) / 60000);
+    const duration = Math.round(
+      (Date.now() - interview.startedAt.getTime()) / 60000,
+    );
 
     interview.overallScore = overallScore;
     interview.aiFeedback = aiFeedback;
-    interview.status = 'completed';
+    interview.status = "completed";
     interview.completedAt = new Date();
     interview.duration = duration;
 
@@ -121,11 +168,15 @@ exports.getUserInterviews = async (req, res, next) => {
       .sort({ createdAt: -1 })
       .limit(limit * 1)
       .skip((page - 1) * limit)
-      .select('-questions.userAnswer -questions.aiFeedback');
+      .select("-questions.userAnswer -questions.aiFeedback");
 
     const total = await Interview.countDocuments(filter);
 
-    res.json({ success: true, interviews, pagination: { total, page, pages: Math.ceil(total / limit) } });
+    res.json({
+      success: true,
+      interviews,
+      pagination: { total, page, pages: Math.ceil(total / limit) },
+    });
   } catch (error) {
     next(error);
   }
@@ -135,9 +186,14 @@ exports.getUserInterviews = async (req, res, next) => {
 // @route   GET /api/interview/:id
 exports.getInterview = async (req, res, next) => {
   try {
-    const interview = await Interview.findOne({ _id: req.params.id, userId: req.user._id });
+    const interview = await Interview.findOne({
+      _id: req.params.id,
+      userId: req.user._id,
+    });
     if (!interview) {
-      return res.status(404).json({ success: false, message: 'Interview not found.' });
+      return res
+        .status(404)
+        .json({ success: false, message: "Interview not found." });
     }
     res.json({ success: true, interview });
   } catch (error) {
@@ -149,8 +205,11 @@ exports.getInterview = async (req, res, next) => {
 // @route   DELETE /api/interview/:id
 exports.deleteInterview = async (req, res, next) => {
   try {
-    await Interview.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
-    res.json({ success: true, message: 'Interview deleted.' });
+    await Interview.findOneAndDelete({
+      _id: req.params.id,
+      userId: req.user._id,
+    });
+    res.json({ success: true, message: "Interview deleted." });
   } catch (error) {
     next(error);
   }

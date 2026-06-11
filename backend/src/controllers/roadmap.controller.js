@@ -2,7 +2,7 @@
 const Roadmap = require('../models/Roadmap.model');
 const Interview = require('../models/Interview.model');
 const Resume = require('../models/Resume.model');
-const { generateLearningRoadmap } = require('../services/ai/ai.service');
+const { generateLearningRoadmap } = require('../services/ai.service');
 
 exports.generateRoadmap = async (req, res, next) => {
   try {

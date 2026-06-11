@@ -1,0 +1,23 @@
+@import "./index.css";
+
+.hero {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 40px;
+}
+.hero img.base {
+  border-radius: 8px;
+}
+.framework {
+  width: 48px;
+}
+.vite {
+  width: 48px;
+}
+.counter {
+  margin-top: 20px;
+}
+
+/* lightweight styles to avoid missing App.css error */
