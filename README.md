@@ -196,5 +196,5 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ---
 
 <div align="center">
-  <p>Made with ❤️ by <a href="#">Your Name/Team</a></p>
+  <p>Made with ❤️ by <a href="#">Anshika</a></p>
 </div>
