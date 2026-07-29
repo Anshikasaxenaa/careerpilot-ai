@@ -9,35 +9,39 @@ module.exports = {
       },
       colors: {
         brand: {
-          400: "#ffb070",
-          500: "#ff9b50", // New primary orange
-          600: "#e88035",
+          400: "#a78bfa",
+          500: "#8b5cf6", // Violet primary
+          600: "#7c3aed",
         },
         dark: {
-          400: "#1e293b",
-          500: "#0f172a", // Slate 900
-          600: "#020617", // Slate 950
+          400: "#27272a",
+          500: "#09090b", // Deep zinc
+          600: "#000000",
         },
         light: {
-          400: "#f8fafc",
-          500: "#fffdf8", // Warm white
-          600: "#f1f5f9",
+          400: "#f4f4f5",
+          500: "#fafafa", // Clean white
+          600: "#ffffff",
         },
         accent: {
-          yellow: "#fcd34d",
+          yellow: "#fde047",
           purple: "#c084fc",
           pink: "#f472b6",
+          cyan: "#22d3ee",
         }
       },
       boxShadow: {
         soft: "var(--shadow)",
-        glow: "0 0 20px rgba(255, 155, 80, 0.4)",
+        glow: "0 0 20px rgba(139, 92, 246, 0.4)",
         "glow-cyan": "0 0 20px rgba(34, 211, 238, 0.4)",
+        premium: "0 10px 40px -10px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1)",
       },
       animation: {
         "float": "float 6s ease-in-out infinite",
         "blob": "blob 7s infinite",
         "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "shimmer": "shimmer 2s linear infinite",
+        "aurora": "aurora 15s linear infinite",
       },
       keyframes: {
         float: {
@@ -49,6 +53,15 @@ module.exports = {
           "33%": { transform: "translate(30px, -50px) scale(1.1)" },
           "66%": { transform: "translate(-20px, 20px) scale(0.9)" },
           "100%": { transform: "translate(0px, 0px) scale(1)" },
+        },
+        shimmer: {
+          "from": { backgroundPosition: "200% 0" },
+          "to": { backgroundPosition: "-200% 0" },
+        },
+        aurora: {
+          "0%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+          "100%": { backgroundPosition: "0% 50%" },
         }
       }
     },

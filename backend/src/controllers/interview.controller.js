@@ -9,19 +9,21 @@ const {
 // @route   POST /api/interview/start
 exports.startInterview = async (req, res, next) => {
   try {
-    const { role, difficulty, type, questionCount = 10 } = req.body;
+    const { role, difficulty, type, questionCount = 10, targetCompany = "" } = req.body;
 
     const questions = await generateInterviewQuestions(
       role,
       difficulty,
       type,
       questionCount,
+      targetCompany
     );
 
     const interview = await Interview.create({
       userId: req.user._id,
-      title: `${role} - ${difficulty} Interview`,
+      title: `${role} - ${difficulty} Interview${targetCompany ? ` at ${targetCompany}` : ''}`,
       role,
+      targetCompany,
       difficulty,
       type,
       questions: questions.map((q) => ({
@@ -90,6 +92,9 @@ exports.submitAnswer = async (req, res, next) => {
     interview.questions[questionIndex].aiFeedback = evaluation.feedback;
     interview.questions[questionIndex].score = evaluation.score;
     interview.questions[questionIndex].timeSpent = timeSpent || 0;
+    if (evaluation.starBreakdown) {
+      interview.questions[questionIndex].starBreakdown = evaluation.starBreakdown;
+    }
     interview.completedQuestions = interview.questions.filter(
       (q) => q.userAnswer,
     ).length;

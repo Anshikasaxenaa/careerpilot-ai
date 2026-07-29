@@ -64,10 +64,10 @@ Return ONLY valid JSON (no markdown) with this exact structure:
 
 // ─── INTERVIEW QUESTIONS ─────────────────────────────────────────────────────
 
-const generateInterviewQuestions = async (role, difficulty, type, count = 10) => {
+const generateInterviewQuestions = async (role, difficulty, type, count = 10, targetCompany = "") => {
   const prompt = `
-Generate ${count} interview questions for a ${difficulty} level ${role} position.
-Question types: ${type} (technical, behavioral, hr, or mixed).
+Generate ${count} interview questions for a ${difficulty} level ${role} position${targetCompany ? ` at ${targetCompany}` : ''}.
+Question types: ${type} (technical, behavioral, hr, or mixed).${targetCompany ? `\nEnsure the questions align with ${targetCompany}'s known interview style, core values, or leadership principles if applicable.` : ''}
 
 Return ONLY valid JSON array (no markdown):
 [
@@ -101,7 +101,13 @@ Evaluate the answer and return ONLY valid JSON (no markdown):
   "feedback": "<detailed constructive feedback>",
   "strengths": ["<strength 1>", "<strength 2>"],
   "improvements": ["<improvement 1>", "<improvement 2>"],
-  "idealAnswer": "<brief ideal answer outline>"
+  "idealAnswer": "<brief ideal answer outline>",
+  "starBreakdown": {
+    "situation": "<extracted situation or empty string if not applicable/provided>",
+    "task": "<extracted task or empty string if not applicable/provided>",
+    "action": "<extracted action or empty string if not applicable/provided>",
+    "result": "<extracted result or empty string if not applicable/provided>"
+  }
 }
 `;
 

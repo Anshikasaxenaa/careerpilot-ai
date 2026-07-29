@@ -20,7 +20,7 @@ const TYPES = [
 export default function InterviewSetupPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [config, setConfig] = useState({ role: 'Software Engineer', difficulty: 'intermediate', type: 'mixed', questionCount: 8 });
+  const [config, setConfig] = useState({ role: 'Software Engineer', difficulty: 'intermediate', type: 'mixed', questionCount: 8, targetCompany: '' });
 
   const startInterview = async () => {
     setLoading(true);
@@ -65,6 +65,19 @@ export default function InterviewSetupPage() {
           </div>
         </div>
 
+        {/* Target Company */}
+        <div className="glass-card p-6">
+          <h2 className="text-base font-semibold text-white mb-2">Target Company <span className="text-slate-500 font-normal">(Optional)</span></h2>
+          <p className="text-slate-400 text-sm mb-4">Get questions tailored to a specific company's interview style.</p>
+          <input
+            type="text"
+            placeholder="e.g. Google, Meta, Stripe..."
+            value={config.targetCompany}
+            onChange={e => set('targetCompany', e.target.value)}
+            className="input-dark text-sm w-full"
+          />
+        </div>
+
         {/* Difficulty */}
         <div className="glass-card p-6">
           <h2 className="text-base font-semibold text-white mb-4">Difficulty Level</h2>
@@ -107,7 +120,7 @@ export default function InterviewSetupPage() {
         <div className="glass-card p-6 border-brand-500/20">
           <h3 className="text-sm font-semibold text-slate-300 mb-3">Session Summary</h3>
           <div className="grid grid-cols-2 gap-3 mb-6 text-sm">
-            {[['Role', config.role], ['Difficulty', config.difficulty], ['Type', config.type], ['Questions', config.questionCount]].map(([k, v]) => (
+            {[['Role', config.role], ['Company', config.targetCompany || 'Any'], ['Difficulty', config.difficulty], ['Type', config.type], ['Questions', config.questionCount]].map(([k, v]) => (
               <div key={k} className="flex justify-between">
                 <span className="text-slate-500">{k}</span>
                 <span className="text-white font-medium capitalize">{v}</span>

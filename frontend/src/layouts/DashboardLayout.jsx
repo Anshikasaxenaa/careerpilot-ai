@@ -34,7 +34,7 @@ export default function DashboardLayout() {
   if (!isAuthenticated) return <Navigate to="/login" replace />;
 
   return (
-    <div className="flex h-screen bg-[#060609] text-white overflow-hidden font-sans selection:bg-brand-500/30">
+    <div className="flex h-screen bg-zinc-950 text-zinc-100 overflow-hidden font-sans selection:bg-brand-500/30">
       {/* Sidebar Overlay for Mobile */}
       <AnimatePresence>
         {sidebarOpen && (
@@ -43,7 +43,7 @@ export default function DashboardLayout() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => dispatch(toggleSidebar())}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
+            className="fixed inset-0 bg-black/60 backdrop-blur-md z-40 lg:hidden"
           />
         )}
       </AnimatePresence>
@@ -56,7 +56,7 @@ export default function DashboardLayout() {
           x: sidebarOpen ? 0 : (window.innerWidth < 1024 ? -88 : 0) // Hide entirely on mobile when closed
         }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className="fixed lg:static inset-y-0 left-0 z-50 flex-shrink-0 flex flex-col bg-[#0b0a10] border-r border-white/5 shadow-2xl lg:shadow-none"
+        className="fixed lg:static inset-y-0 left-0 z-50 flex-shrink-0 flex flex-col bg-zinc-950/80 backdrop-blur-xl border-r border-white/5 shadow-2xl lg:shadow-none"
       >
         {/* Logo Area */}
         <div className="flex items-center gap-4 px-6 py-6 h-20 border-b border-white/5">
@@ -83,20 +83,20 @@ export default function DashboardLayout() {
             <NavLink
               key={to}
               to={to}
-              className={({ isActive }) => `relative flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 group ${isActive ? 'text-white' : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'}`}
+              className={({ isActive }) => `relative flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 group ${isActive ? 'text-white' : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/5'}`}
             >
               {({ isActive }) => (
                 <>
                   {isActive && (
                     <motion.div
                       layoutId="active-nav"
-                      className="absolute inset-0 bg-brand-500/10 border border-brand-500/20 rounded-xl"
+                      className="absolute inset-0 bg-brand-500/15 border border-brand-500/30 rounded-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ type: "spring", stiffness: 300, damping: 30 }}
                     />
                   )}
-                  <Icon size={20} className={`flex-shrink-0 relative z-10 transition-colors ${isActive ? 'text-brand-400' : 'group-hover:text-slate-300'}`} />
+                  <Icon size={20} className={`flex-shrink-0 relative z-10 transition-colors ${isActive ? 'text-brand-400 drop-shadow-[0_0_8px_rgba(167,139,250,0.5)]' : 'group-hover:text-zinc-300'}`} />
                   
                   <AnimatePresence mode="popLayout">
                     {sidebarOpen && (
@@ -120,7 +120,7 @@ export default function DashboardLayout() {
             <div className="pt-4 mt-4 border-t border-white/5">
               <NavLink
                 to="/admin"
-                className={({ isActive }) => `relative flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 group ${isActive ? 'text-white' : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'}`}
+                className={({ isActive }) => `relative flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 group ${isActive ? 'text-white' : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/5'}`}
               >
                 {({ isActive }) => (
                   <>
@@ -153,10 +153,10 @@ export default function DashboardLayout() {
         </nav>
 
         {/* Footer Actions */}
-        <div className="px-4 py-6 border-t border-white/5 space-y-2 bg-[#0b0a10]">
+        <div className="px-4 py-6 border-t border-white/5 space-y-2 bg-transparent">
           <NavLink
             to="/profile"
-            className={({ isActive }) => `flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 ${isActive ? 'bg-white/10 text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
+            className={({ isActive }) => `flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 ${isActive ? 'bg-white/10 text-white' : 'text-zinc-400 hover:text-white hover:bg-white/5'}`}
           >
             <Settings size={20} />
             <AnimatePresence mode="popLayout">
@@ -172,7 +172,7 @@ export default function DashboardLayout() {
               dispatch(logout());
               navigate("/login");
             }}
-            className="w-full flex items-center gap-4 px-4 py-3 rounded-xl text-slate-400 hover:text-red-400 hover:bg-red-400/10 transition-all duration-300"
+            className="w-full flex items-center gap-4 px-4 py-3 rounded-xl text-zinc-400 hover:text-red-400 hover:bg-red-400/10 transition-all duration-300"
           >
             <LogOut size={20} />
             <AnimatePresence mode="popLayout">
@@ -187,32 +187,33 @@ export default function DashboardLayout() {
       </motion.aside>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 bg-[#060609] relative">
-        {/* Subtle Background Glows */}
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-brand-600/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="flex-1 flex flex-col min-w-0 bg-zinc-950 relative">
+        {/* Premium Background Glows */}
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-brand-600/15 rounded-full blur-[120px] pointer-events-none mix-blend-screen" />
+        <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-cyan-600/10 rounded-full blur-[150px] pointer-events-none mix-blend-screen" />
         
         {/* Top Header */}
-        <header className="h-20 flex-shrink-0 flex items-center justify-between px-6 lg:px-10 border-b border-white/5 bg-[#0b0a10]/80 backdrop-blur-xl sticky top-0 z-30">
+        <header className="h-20 flex-shrink-0 flex items-center justify-between px-6 lg:px-10 border-b border-white/5 bg-zinc-950/60 backdrop-blur-xl sticky top-0 z-30">
           <div className="flex items-center gap-4">
             <button
               onClick={() => dispatch(toggleSidebar())}
-              className="p-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 transition-all active:scale-95"
+              className="p-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-white/10 transition-all active:scale-95"
             >
               <Menu size={22} />
             </button>
-            <h2 className="text-xl font-display font-semibold hidden sm:block text-slate-200">
-              Welcome back, {user?.name?.split(' ')[0]}
+            <h2 className="text-xl font-display font-semibold hidden sm:block text-zinc-100">
+              Welcome back, {user?.name?.split(' ')[0] || 'User'}
             </h2>
           </div>
           
           <div className="flex items-center gap-5">
             <div className="hidden sm:flex flex-col items-end mr-2">
-              <span className="text-sm font-medium text-slate-200">{user?.name}</span>
+              <span className="text-sm font-medium text-zinc-200">{user?.name || 'User'}</span>
               <span className="text-xs text-brand-400 font-medium tracking-wide">PRO PLAN</span>
             </div>
             <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-500 to-cyan-400 p-[2px] shadow-glow cursor-pointer hover:scale-105 transition-transform">
-              <div className="w-full h-full rounded-full bg-[#0b0a10] flex items-center justify-center border border-transparent">
-                <span className="text-white font-bold text-sm">{user?.name?.[0]?.toUpperCase()}</span>
+              <div className="w-full h-full rounded-full bg-zinc-950 flex items-center justify-center border border-transparent">
+                <span className="text-white font-bold text-sm">{(user?.name?.[0] || 'U').toUpperCase()}</span>
               </div>
             </div>
           </div>

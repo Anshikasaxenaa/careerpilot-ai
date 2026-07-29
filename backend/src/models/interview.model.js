@@ -10,6 +10,12 @@ const questionSchema = new mongoose.Schema({
   score: { type: Number, default: 0, min: 0, max: 10 },
   timeSpent: { type: Number, default: 0 }, // seconds
   followUpQuestions: [String],
+  starBreakdown: {
+    situation: { type: String, default: '' },
+    task: { type: String, default: '' },
+    action: { type: String, default: '' },
+    result: { type: String, default: '' },
+  },
 });
 
 const interviewSchema = new mongoose.Schema({
@@ -20,6 +26,7 @@ const interviewSchema = new mongoose.Schema({
   },
   title: { type: String, default: 'Mock Interview' },
   role: { type: String, required: true },
+  targetCompany: { type: String, default: '' },
   difficulty: { type: String, enum: ['beginner', 'intermediate', 'advanced'], default: 'intermediate' },
   type: { type: String, enum: ['technical', 'hr', 'mixed', 'behavioral'], default: 'mixed' },
   questions: [questionSchema],
