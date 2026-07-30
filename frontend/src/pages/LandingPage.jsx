@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Sun, Moon, Star, ArrowRight, PlayCircle, CheckCircle2, BookOpen, Users, MonitorPlay, Layers, Brain, FileText, Code2 } from "lucide-react";
+import { Sun, Moon, Star, ArrowRight, PlayCircle, CheckCircle2, BookOpen, Users, MonitorPlay, Layers, Brain, FileText, Code2, Plus } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
 
 export default function LandingPage() {
@@ -16,15 +16,23 @@ export default function LandingPage() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
   };
 
+  const scrollToSection = (e, id) => {
+    e.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] font-sans transition-colors duration-300 overflow-x-hidden relative">
+    <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] font-sans transition-colors duration-300 overflow-x-hidden relative" id="home">
       
       {/* Absolute Ambient Background */}
       <div className="absolute top-0 left-0 w-full h-[600px] aurora-bg opacity-20 dark:opacity-10 pointer-events-none z-0 [mask-image:linear-gradient(to_bottom,white,transparent)]" style={{ WebkitMaskImage: 'linear-gradient(to bottom, black, transparent)' }} />
 
       {/* Navbar */}
       <nav className="relative z-10 flex items-center justify-between px-6 md:px-12 py-6 max-w-7xl mx-auto">
-        <div className="flex items-center gap-2 cursor-pointer group">
+        <div className="flex items-center gap-2 cursor-pointer group" onClick={(e) => scrollToSection(e, 'home')}>
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center font-bold text-lg text-white shadow-glow transition-transform group-hover:scale-105">
             P
           </div>
@@ -32,11 +40,11 @@ export default function LandingPage() {
         </div>
         
         <div className="hidden lg:flex items-center gap-8 font-medium text-sm">
-          <a href="#" className="text-brand-500 font-semibold">Home</a>
-          <a href="#" className="hover:text-brand-500 transition-colors">About us</a>
-          <a href="#" className="hover:text-brand-500 transition-colors">Courses</a>
-          <a href="#" className="hover:text-brand-500 transition-colors">Contact us</a>
-          <a href="#" className="hover:text-brand-500 transition-colors">FAQs</a>
+          <a href="#home" onClick={(e) => scrollToSection(e, 'home')} className="hover:text-brand-500 transition-colors">Home</a>
+          <a href="#about" onClick={(e) => scrollToSection(e, 'about')} className="hover:text-brand-500 transition-colors">About us</a>
+          <a href="#courses" onClick={(e) => scrollToSection(e, 'courses')} className="hover:text-brand-500 transition-colors">Courses</a>
+          <a href="#faqs" onClick={(e) => scrollToSection(e, 'faqs')} className="hover:text-brand-500 transition-colors">FAQs</a>
+          <a href="#contact" onClick={(e) => scrollToSection(e, 'contact')} className="hover:text-brand-500 transition-colors">Contact us</a>
         </div>
 
         <div className="flex items-center gap-4">
@@ -146,8 +154,8 @@ export default function LandingPage() {
       </section>
 
       {/* Services Section */}
-      <section className="max-w-7xl mx-auto px-6 md:px-12 py-24 text-center">
-        <h3 className="gradient-text font-bold mb-4 uppercase tracking-wider text-sm">Platform Features</h3>
+      <section id="about" className="max-w-7xl mx-auto px-6 md:px-12 py-24 text-center">
+        <h3 className="gradient-text font-bold mb-4 uppercase tracking-wider text-sm">Platform Features & About Us</h3>
         <h2 className="text-3xl md:text-5xl font-display font-bold text-[var(--text-h)] mb-16 max-w-3xl mx-auto leading-tight">
           An ecosystem designed to <span className="text-brand-500">supercharge</span> your tech career
         </h2>
@@ -177,13 +185,13 @@ export default function LandingPage() {
       </section>
 
       {/* Popular Class Section */}
-      <section className="bg-[var(--code-bg)] py-24 border-y border-[var(--border)] relative overflow-hidden">
+      <section id="courses" className="bg-[var(--code-bg)] py-24 border-y border-[var(--border)] relative overflow-hidden">
         <div className="absolute inset-0 mesh-bg opacity-30 pointer-events-none" />
         <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
           <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
             <div>
               <h3 className="gradient-text font-bold mb-2 uppercase tracking-wider text-sm">Learning Paths</h3>
-              <h2 className="text-3xl md:text-4xl font-display font-bold text-[var(--text-h)]">Trending Roadmaps</h2>
+              <h2 className="text-3xl md:text-4xl font-display font-bold text-[var(--text-h)]">Trending Courses & Roadmaps</h2>
               <p className="text-[var(--text)] mt-4 max-w-xl">Follow structured learning paths curated by industry experts to master modern technologies.</p>
             </div>
             <button className="btn-ghost">
@@ -247,8 +255,31 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* FAQs Section */}
+      <section id="faqs" className="max-w-4xl mx-auto px-6 md:px-12 py-24">
+        <div className="text-center mb-16">
+          <h3 className="gradient-text font-bold mb-2 uppercase tracking-wider text-sm">Got Questions?</h3>
+          <h2 className="text-3xl md:text-4xl font-display font-bold text-[var(--text-h)]">Frequently Asked Questions</h2>
+        </div>
+        <div className="space-y-4">
+          {[
+            { q: "Is PrepAI free to use?", a: "Yes, you can create a free account and access a variety of basic mock interviews and resume checks. Premium features require a subscription." },
+            { q: "Do you offer real certificates for courses?", a: "We offer certificates of completion that you can attach to your LinkedIn and resume, showing your dedication to continuous learning." },
+            { q: "How does the AI mock interview work?", a: "Our AI analyzes your voice and text responses in real-time, providing immediate feedback on technical accuracy, communication skills, and areas to improve." },
+          ].map((faq, i) => (
+            <div key={i} className="glass-card p-6 rounded-2xl">
+              <h4 className="text-lg font-bold text-[var(--text-h)] mb-2 flex items-center gap-3">
+                <div className="w-6 h-6 rounded-full bg-brand-500/20 text-brand-500 flex items-center justify-center shrink-0"><Plus size={14} /></div>
+                {faq.q}
+              </h4>
+              <p className="text-[var(--text)] ml-9">{faq.a}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Footer */}
-      <footer className="bg-zinc-950 text-zinc-400 py-16 border-t border-zinc-800">
+      <footer id="contact" className="bg-zinc-950 text-zinc-400 py-16 border-t border-zinc-800">
         <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-2 md:grid-cols-5 gap-8">
           <div className="col-span-2">
             <div className="flex items-center gap-2 mb-6">
@@ -265,19 +296,19 @@ export default function LandingPage() {
           <div>
             <h5 className="text-white font-bold mb-6 tracking-wider text-sm uppercase">Product</h5>
             <ul className="space-y-4 text-sm">
-              <li><a href="#" className="hover:text-brand-400 transition-colors">Features</a></li>
-              <li><a href="#" className="hover:text-brand-400 transition-colors">Mock Interviews</a></li>
-              <li><a href="#" className="hover:text-brand-400 transition-colors">Resume Analysis</a></li>
-              <li><a href="#" className="hover:text-brand-400 transition-colors">Pricing</a></li>
+              <li><a href="#about" onClick={(e) => scrollToSection(e, 'about')} className="hover:text-brand-400 transition-colors">Features</a></li>
+              <li><a href="#about" onClick={(e) => scrollToSection(e, 'about')} className="hover:text-brand-400 transition-colors">Mock Interviews</a></li>
+              <li><a href="#about" onClick={(e) => scrollToSection(e, 'about')} className="hover:text-brand-400 transition-colors">Resume Analysis</a></li>
+              <li><a href="#courses" onClick={(e) => scrollToSection(e, 'courses')} className="hover:text-brand-400 transition-colors">Pricing</a></li>
             </ul>
           </div>
           <div>
             <h5 className="text-white font-bold mb-6 tracking-wider text-sm uppercase">Company</h5>
             <ul className="space-y-4 text-sm">
-              <li><a href="#" className="hover:text-brand-400 transition-colors">About us</a></li>
+              <li><a href="#about" onClick={(e) => scrollToSection(e, 'about')} className="hover:text-brand-400 transition-colors">About us</a></li>
               <li><a href="#" className="hover:text-brand-400 transition-colors">Careers</a></li>
               <li><a href="#" className="flex items-center gap-2 hover:text-brand-400 transition-colors">Press <span className="text-[10px] bg-brand-500 text-white px-1.5 py-0.5 rounded font-bold">NEW</span></a></li>
-              <li><a href="#" className="hover:text-brand-400 transition-colors">Contact</a></li>
+              <li><a href="#contact" onClick={(e) => scrollToSection(e, 'contact')} className="hover:text-brand-400 transition-colors">Contact</a></li>
             </ul>
           </div>
           <div>
