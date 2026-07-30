@@ -1,4 +1,4 @@
-const Resume = require("../models/Resume.model");
+const Resume = require('../models/resume.model');
 const { extractTextFromPDF, cleanText } = require("../services/resume.service");
 const { analyzeResume } = require("../services/ai.service");
 const {

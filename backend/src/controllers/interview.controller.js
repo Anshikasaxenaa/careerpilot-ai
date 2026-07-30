@@ -1,4 +1,4 @@
-const Interview = require("../models/Interview.model");
+const Interview = require('../models/interview.model');
 const {
   generateInterviewQuestions,
   evaluateAnswer,

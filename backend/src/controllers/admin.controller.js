@@ -1,6 +1,6 @@
-const User = require("../models/User.model");
-const Interview = require("../models/Interview.model");
-const Resume = require("../models/Resume.model");
+const User = require('../models/user.model');
+const Interview = require('../models/interview.model');
+const Resume = require('../models/resume.model');
 const CodingChallenge = require("../models/codingChallenge.model");
 
 // @desc    Get platform analytics

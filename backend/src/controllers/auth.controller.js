@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const User = require('../models/User.model');
+const User = require('../models/user.model');
 const { generateToken } = require('../utils/jwt');
 const { sendEmail, emailTemplates } = require('../utils/email');
 const { OAuth2Client } = require('google-auth-library');

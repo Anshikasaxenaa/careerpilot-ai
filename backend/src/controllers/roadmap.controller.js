@@ -1,7 +1,7 @@
 // roadmap.controller.js
-const Roadmap = require('../models/Roadmap.model');
-const Interview = require('../models/Interview.model');
-const Resume = require('../models/Resume.model');
+const Roadmap = require('../models/roadmap.model');
+const Interview = require('../models/interview.model');
+const Resume = require('../models/resume.model');
 const { generateLearningRoadmap } = require('../services/ai.service');
 
 exports.generateRoadmap = async (req, res, next) => {

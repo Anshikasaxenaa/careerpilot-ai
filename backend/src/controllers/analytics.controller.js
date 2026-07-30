@@ -1,6 +1,6 @@
-const Interview = require('../models/Interview.model');
-const Resume = require('../models/Resume.model');
-const User = require('../models/User.model');
+const Interview = require('../models/interview.model');
+const Resume = require('../models/resume.model');
+const User = require('../models/user.model');
 
 // @desc    Get user's performance analytics
 // @route   GET /api/analytics/performance
