@@ -22,17 +22,25 @@ exports.register = async (req, res, next) => {
     const verificationToken = user.generateEmailVerificationToken();
     await user.save({ validateBeforeSave: false });
 
-    const verificationUrl = `${process.env.CLIENT_URL}/verify-email/${verificationToken}`;
-    await sendEmail({
-      to: user.email,
-      subject: 'Verify your PrepAI account',
-      html: emailTemplates.verifyEmail(user.name, verificationUrl),
-    });
+    let emailSent = false;
+    try {
+      const verificationUrl = `${process.env.CLIENT_URL}/verify-email/${verificationToken}`;
+      await sendEmail({
+        to: user.email,
+        subject: 'Verify your PrepAI account',
+        html: emailTemplates.verifyEmail(user.name, verificationUrl),
+      });
+      emailSent = true;
+    } catch (emailError) {
+      console.error('Email sending failed:', emailError);
+    }
 
     const token = generateToken(user._id);
     res.status(201).json({
       success: true,
-      message: 'Registration successful. Please check your email to verify your account.',
+      message: emailSent 
+        ? 'Registration successful. Please check your email to verify your account.'
+        : 'Registration successful. (Email verification is currently unavailable)',
       token,
       user: { id: user._id, name: user.name, email: user.email, role: user.role, isEmailVerified: user.isEmailVerified },
     });
